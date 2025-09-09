@@ -8,16 +8,20 @@
 
 (define matrix-*-vector
   (lambda (m v)
-    (map (lambda (mat) (accumulate + 0 (map * mat v))) m)))
+    (map (lambda (row)
+           (dot-product row v))
+         m)))
 
 (define transpose
-  (lambda (mat)
-    (accumulate-n cons '() mat)))
+  (lambda (m)
+    (accumulate-n cons '() m)))
 
 (define matrix-*-matrix
   (lambda (m n)
     (let ((cols (transpose n)))
-      (map (lambda (mat) (matrix-*-vector cols mat)) m))))
+      (map (lambda (row)
+             (matrix-*-vector cols row))
+           m))))
 
 (define accumulate
   (lambda (op initial sequence)
